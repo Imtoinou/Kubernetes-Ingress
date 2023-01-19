@@ -76,6 +76,6 @@ modification du fichier de conf /etc/hosts
 
 ### 6 Votre magasin de tacos devient très populaire (il va avoir 3 fois plus de commandes). Il va vous falloir gérer une charge importante sur le Service de commande des tacos.Comment gérez-vous cela ? Comment vérifier que la charge est bien répartie (avec quelle commande kubectl ?) ?
 
-Avec réplicaSet qui est à 3, nous avons dispaché les charges sur le service de commande des tacos. Nous pouvons vérifier que la charge est bien répartie avec la commance : `kubectl top` elle affiche les ressources utilisées par les différents noeuds et les différents pods dans le cluster.
+Avec réplicaSet qui est à 3, nous avons dispaché les charges sur le service de commande des tacos. Nous pouvons vérifier que la charge est bien répartie avec la commance : `via kubectl logs` elle affiche les ressources utilisées par les différents noeuds et les différents pods dans le cluster.
 
 
