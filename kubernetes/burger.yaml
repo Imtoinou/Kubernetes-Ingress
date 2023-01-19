@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: tp5
+  labels:
+    name: tp5
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: burger
+  namespace: tp5
+  labels:
+    app: burger
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: burger
+  template:
+    metadata:
+      labels:
+        app: burger
+    spec:
+      containers:
+      - name: burger
+        image: imtoinou/ynov_tp:burger
+        ports:
+        - containerPort: 80
+          name: burger-port
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: burger-service
+  namespace: tp5
+spec:
+  selector:
+    label: burger
+  ports:
+  - name: burger-port
+    protocol: TCP
+    port: 80
+    targetPort: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: burger-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - host: burgerandtacos.eatsout.com
+  - http:
+      paths:
+      - path: /burgers
+        pathType: Prefix
+        backend:
+          service:
+            name: burger-service
+            port:
+              number: 80

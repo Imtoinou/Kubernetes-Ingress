@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: tp5
+  labels:
+    name: tp5
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pizza
+  namespace: tp5
+  labels:
+    app: pizza
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pizza
+  template:
+    metadata:
+      labels:
+        app: pizza
+    spec:
+      containers:
+      - name: pizza
+        image: imtoinou/ynov_tp:pizza
+        ports:
+        - containerPort: 80
+          name: pizza-port
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pizza-service
+  namespace: tp5
+spec:
+  selector:
+    label: pizza
+  ports:
+  - name: pizza-port
+    protocol: TCP
+    port: 80
+    targetPort: 80

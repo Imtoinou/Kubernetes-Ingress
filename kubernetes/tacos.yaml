@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: tp5
+  labels:
+    name: tp5
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tacos
+  namespace: tp5
+  labels:
+    app: tacos
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: tacos
+  template:
+    metadata:
+      labels:
+        app: tacos
+    spec:
+      containers:
+      - name: tacos
+        image: imtoinou/ynov_tp:tacos
+        ports:
+        - containerPort: 80
+          name: tacos-port
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tacos-service
+  namespace: tp5
+spec:
+  selector:
+    label: tacos
+  ports:
+  - name: tacos-port
+    protocol: TCP
+    port: 80
+    targetPort: 80
