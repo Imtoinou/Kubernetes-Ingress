@@ -37,9 +37,29 @@ metadata:
   namespace: tp5
 spec:
   selector:
-    label: tacos
+    app: tacos
   ports:
   - name: tacos-port
     protocol: TCP
     port: 80
     targetPort: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: tacos-ingress
+  namespace: tp5
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - host: burgerandtacos.eatsout.com
+    http:
+      paths:
+      - path: /tacos
+        pathType: Prefix
+        backend:
+          service:
+            name: tacos-service
+            port:
+              number: 80

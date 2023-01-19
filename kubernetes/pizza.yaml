@@ -37,9 +37,29 @@ metadata:
   namespace: tp5
 spec:
   selector:
-    label: pizza
+    app: pizza
   ports:
   - name: pizza-port
     protocol: TCP
     port: 80
     targetPort: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: pizza-ingress
+  namespace: tp5
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - host: mypizza.eatsout.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: pizza-service
+            port:
+              number: 80

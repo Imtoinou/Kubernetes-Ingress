@@ -37,7 +37,7 @@ metadata:
   namespace: tp5
 spec:
   selector:
-    label: burger
+    app: burger
   ports:
   - name: burger-port
     protocol: TCP
@@ -48,12 +48,13 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: burger-ingress
+  namespace: tp5
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
   - host: burgerandtacos.eatsout.com
-  - http:
+    http:
       paths:
       - path: /burgers
         pathType: Prefix
